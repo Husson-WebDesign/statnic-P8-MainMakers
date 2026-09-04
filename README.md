@@ -22,6 +22,10 @@ This project will eventually use:
 - Git
 - GitHub
 
+## Git Practice
+
+I successfully created and used a Git branch.
+
 ## Project Status
 
 - [x] Lab 0 - Development Environment Setup

@@ -1,1 +1,486 @@
 
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* =========================
+   Global Styles
+========================= */
+
+:root {
+    /* Color palette */
+    --color-ink: #23201b;          /* primary text */
+    --color-ink-soft: #55504a;     /* secondary text */
+    --color-paper: #f5f1e7;        /* page background, warm birch-white */
+    --color-surface: #fffdf8;      /* card / panel background */
+    --color-shop-blue: #1f3f4d;    /* primary — header, nav, headings */
+    --color-shop-blue-dark: #152b35;
+    --color-oak: #b98c55;          /* secondary — dividers, borders, tags */
+    --color-oak-light: #e7d3ae;
+    --color-caution: #e2a63b;      /* accent — buttons, CTAs, highlights */
+    --color-caution-dark: #c78a22;
+    --color-safety: #a8442f;       /* safety callouts / warnings only */
+    --color-line: rgba(35, 32, 27, 0.14);
+
+    /* Type scale */
+    --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+    --font-body: 'Inter', 'Segoe UI', sans-serif;
+
+    /* Spacing scale */
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2.5rem;
+    --space-5: 4rem;
+
+    /* Shared values */
+    --radius: 10px;
+    --shadow: 0 2px 10px rgba(21, 43, 53, 0.08);
+    --container-width: 1080px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-ink);
+    background-color: var(--color-paper);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius);
+}
+
+a {
+    color: var(--color-shop-blue);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+:focus-visible {
+    outline: 3px solid var(--color-caution);
+    outline-offset: 2px;
+}
+
+ul {
+    padding-left: 1.25rem;
+}
+
+li {
+    margin-bottom: 0.35rem;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--color-line);
+    margin: var(--space-4) 0;
+}
+
+/* Reusable content container. */
+header,
+nav,
+#home, #about, #workshops, #memberships, #contact,
+footer {
+    width: 90%;
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Optional explicit class, for any new wrapper divs */
+.container {
+    width: 90%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+/* =========================
+   Typography
+========================= */
+
+h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-shop-blue);
+    line-height: 1.2;
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 2.75rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-1);
+    border-bottom: 3px solid var(--color-oak);
+    display: inline-block;
+}
+
+h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--color-shop-blue-dark);
+}
+
+h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-ink-soft);
+    font-style: italic;
+}
+
+p {
+    max-width: 68ch;
+    color: var(--color-ink);
+}
+
+p, ul {
+    margin-top: 0;
+    margin-bottom: var(--space-2);
+}
+
+/* =========================
+   Header
+========================= */
+
+body > header {
+    background-color: var(--color-shop-blue);
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: var(--space-4) 0 var(--space-3);
+    text-align: center;
+}
+
+body > header h1,
+body > header p {
+    width: 90%;
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--color-paper);
+}
+
+body > header h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.35rem;
+}
+
+body > header p {
+    margin-top:0;
+    margin-bottom:0;
+    color: var(--color-oak-light);
+    font-size: 1.05rem;
+}
+
+/* =========================
+   Navigation
+========================= */
+
+nav {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    background-color: var(--color-shop-blue-dark);
+    border-bottom: 4px solid var(--color-caution);
+}
+
+nav ul {
+    width: 90%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    list-style: none;
+    padding: var(--space-1) 0;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-1) var(--space-3);
+}
+
+nav a {
+    display: inline-block;
+    padding: 0.5rem 0.1rem;
+    color: var(--color-paper);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+}
+
+nav a:hover,
+nav a:focus-visible {
+    border-bottom-color: var(--color-caution);
+    text-decoration: none;
+}
+
+/* =========================
+   Hero (homepage intro)
+========================= */
+
+#home {
+    padding-top: var(--space-5);
+    padding-bottom: var(--space-4);
+    border-bottom: 6px solid transparent;
+    border-image: repeating-linear-gradient(
+        90deg,
+        var(--color-oak) 0 2px,
+        transparent 2px 14px
+    ) 6;
+}
+
+#home h2 {
+    font-size: 2.4rem;
+    border-bottom: none;
+    padding-bottom: 0;
+    max-width: 20ch;
+}
+
+#home p {
+    font-size: 1.1rem;
+    color: var(--color-ink-soft);
+    max-width: 62ch;
+}
+
+/* CTA link inside the hero, styled as a button */
+#home a {
+    display: inline-block;
+    margin-top: var(--space-2);
+}
+
+/* =========================
+   Main Content
+========================= */
+
+main {
+    display: block;
+}
+
+section {
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+}
+
+section + section {
+    border-top: 1px solid var(--color-line);
+}
+
+/* Section intro headings that sit above a list of cards
+   (Skill Levels, general notes) */
+#workshops h3,
+#memberships h3,
+#contact h3 {
+    margin-top: var(--space-4);
+}
+
+/* =========================
+   Components
+========================= */
+
+/* Buttons / calls-to-action. */
+#home a,
+.button {
+    background-color: var(--color-caution);
+    color: var(--color-shop-blue-dark);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+#home a:hover,
+.button:hover {
+    background-color: var(--color-caution-dark);
+    text-decoration: none;
+}
+
+/* Workshop / article cards. */
+article,
+.card,
+.workshop-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-left: 5px solid var(--color-oak);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.workshop-grid,
+.membership-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-3);
+}
+
+.workshop-grid .workshop-card,
+.membership-grid .card {
+    margin-bottom: 0;
+}
+
+/* Featured membership tier */
+.membership-grid .card.featured {
+    border-left-color: var(--color-caution);
+    border-top: 4px solid var(--color-caution);
+}
+
+/* Meta line that sits above a card's description */
+.workshop-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    color: var(--color-ink-soft);
+    max-width: none;
+}
+
+/* Small tag chip, e.g. for skill level or price
+   <span class="tag">Beginner</span> */
+.tag {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-shop-blue-dark);
+    background-color: var(--color-oak-light);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    margin-right: 0.4rem;
+}
+
+/* Staff / people cards */
+.staff-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.staff-card {
+    flex: 1 1 260px;
+}
+
+/* Safety callouts */
+.safety-note {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-left: 5px solid var(--color-safety);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.safety-note h3,
+.safety-note h4 {
+    color: var(--color-safety);
+    font-style: normal;
+}
+
+/* =========================
+   Forms
+========================= */
+
+form,
+.contact-form {
+    max-width: 640px;
+    margin-top: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+label {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    color: var(--color-shop-blue-dark);
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: var(--space-2);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-ink);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--color-oak);
+}
+
+textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+button,
+input[type="submit"] {
+    background-color: var(--color-caution);
+    color: var(--color-shop-blue-dark);
+    font-family: var(--font-display);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: var(--color-caution-dark);
+}
+
+/* =========================
+   Footer
+========================= */
+
+body > footer {
+    width: 100%;
+    max-width: none;
+    margin: var(--space-4) 0 0;
+    background-color: var(--color-shop-blue-dark);
+    color: var(--color-oak-light);
+    padding: var(--space-4) 0;
+    text-align: left;
+}
+
+body > footer p {
+    width: 90%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    color: var(--color-oak-light);
+    font-size: 0.9rem;
+}

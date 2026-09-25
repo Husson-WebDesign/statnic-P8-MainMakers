@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
     <title>Contact</title>
 </head>
 <body>
@@ -30,12 +31,14 @@
                 to find out more about membership options, or if you have any questions!
             </p>
 
-            <h3>General Information:</h3>
+            <h3>General Information</h3>
             <p>Location: Bangor, Maine</p>
             <h4>Contact Us:</h4>
             <p>Phone Number: 207-555-0108</p>
-            <p>Email: <a href="julia@mainemakers.example">julia@mainemakers.example</a></p>
+            <p>Email: <a href="mailto:julia@mainemakers.example">julia@mainemakers.example</a></p>
 
+
+            <h3>Send Us a Message</h3>
             <p>When contacting Maine Makers Workshop about a workshop, visitors should be prepared to provide:</p>
             <ul>
                 <li>name</li>
@@ -45,10 +48,35 @@
                 <li>experience level</li>
                 <li>and any questions about the activity.</li>
             </ul>
-            <h4>Workshop schedules may occasionally change because of instructor availability, equipment issues,
-                weather, or enrollment. Registered participants will be contacted when significant schedule changes
-                occur.</h4>
 
+            <form class="contact-form" action="#" method="post">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone">
+
+                <label for="workshop">Workshop of Interest</label>
+                <input type="text" id="workshop" name="workshop" placeholder="e.g. Soldering Basics">
+
+                <label for="experience">Experience Level</label>
+                <input type="text" id="experience" name="experience" placeholder="e.g. Beginner">
+
+                <label for="message">Questions or Notes</label>
+                <textarea id="message" name="message"></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+
+            <div class="safety-note">
+                <h4>Workshop schedules may occasionally change because of instructor availability, equipment issues,
+                    weather, or enrollment. Registered participants will be contacted when significant schedule changes
+                    occur.
+                </h4>
+            </div>
 
             <p>For membership questions, visitors may ask about:</p>
             <ul>
@@ -74,68 +102,82 @@
 
             <h3>Staff Information</h3>
 
-            <h4>Julia Chen</h4>
-            <p>
-                Position: Founder and Workshop Director
-                Julia oversees:
-            </p>
-            <ul>
-                <li>makerspace operations</li>
-                <li>programming</li>
-                <li>instructor coordination</li>
-                <li>memberships</li>
-                <li>community partnerships</li>
-                <li>and safety procedures.</li>
-            </ul>
-            <p>She works to create programs that make practical skills approachable for new makers.</p>
+            <div class="staff-grid">
+                <div class="card staff-card">
 
-            <h4>Ben Carter</h4>
-            <p>
-                Position: Woodworking Instructor
-                Ben teaches:
-            </p>
-            <ul>
-                <li>beginner woodworking</li>
-                <li>tool orientation</li>
-                <li>measuring</li>
-                <li>basic project construction</li>
-                <li>and safe woodworking practices.</li>
-            </ul>
-            <p>He focuses on helping new makers become comfortable using tools correctly.</p>
+                    <h4>Julia Chen</h4>
+                    <p class="workshop-meta"><span class="tag">Founder &amp; Workshop Director</span></p>
+                    <p>
+                        Julia oversees:
+                    </p>
+                    <ul>
+                        <li>makerspace operations</li>
+                        <li>programming</li>
+                        <li>instructor coordination</li>
+                        <li>memberships</li>
+                        <li>community partnerships</li>
+                        <li>and safety procedures.</li>
+                    </ul>
+                    <p>She works to create programs that make practical skills approachable for new makers.</p>
+                </div>
 
-            <h4>Priya Shah</h4>
-            <p>
-                Position: Electronics and 3D Printing Instructor
-                Priya teaches:
-            </p>
-            <ul>
-                <li>beginner electronics</li>
-                <li>soldering</li>
-                <li>basic digital design</li>
-                <li>3D printing</li>
-                <li>troubleshooting</li>
-                <li>and equipment safety.</li>
-            </ul>
-            <p>She enjoys helping students understand how digital ideas can become physical projects.</p>
+                <div class="card staff-card">
+                    <h4>Ben Carter</h4>
+                    <p class="workshop-meta"><span class="tag">Woodworking Instructor</span></p>
+                    <p>
+                        Ben teaches:
+                    </p>
+                    <ul>
+                        <li>beginner woodworking</li>
+                        <li>tool orientation</li>
+                        <li>measuring</li>
+                        <li>basic project construction</li>
+                        <li>and safe woodworking practices.</li>
+                    </ul>
+                    <p>He focuses on helping new makers become comfortable using tools correctly.</p>
+                </div>
 
-            <h4>Megan Holt</h4>
-            <p>
-                Position: Member Services Coordinator
-                Megan manages:
-            </p>
-            <ul>
-                <li>workshop registration</li>
-                <li>membership questions</li>
-                <li>class scheduling</li>
-                <li>customer communication</li>
-                <li>and general front-desk operations.</li>
-            </ul>
-            <p>She also helps visitors understand orientation and training requirements.</p>
+                <div class="card staff-card">
+                    <h4>Priya Shah</h4>
+                    <p class="workshop-meta"><span class="tag">Electronics &amp; 3D Printing Instructor</span></p>
+                    <p>
+                        Priya teaches:
+                    </p>
+                    <ul>
+                        <li>beginner electronics</li>
+                        <li>soldering</li>
+                        <li>basic digital design</li>
+                        <li>3D printing</li>
+                        <li>troubleshooting</li>
+                        <li>and equipment safety.</li>
+                    </ul>
+                    <p>She enjoys helping students understand how digital ideas can become physical projects.</p>
+                </div>
 
+                <div class="card staff-card">
+                    <h4>Megan Holt</h4>
+                    <p class="workshop-meta"><span class="tag">Member Services Coordinator</span></p>
+                    <p>
+                        Megan manages:
+                    </p>
+                    <ul>
+                        <li>workshop registration</li>
+                        <li>membership questions</li>
+                        <li>class scheduling</li>
+                        <li>customer communication</li>
+                        <li>and general front-desk operations.</li>
+                    </ul>
+                    <p>She also helps visitors understand orientation and training requirements.</p>
+                </div>
+            </div>
+        
             <h2>Safety</h2>
+            <div class="safety-note">
             <h4>Participation in workshop activities requires compliance with all posted safety rules and instructor
                 directions. Failure to follow safety requirements may result in removal from an activity or loss of tool
                 privileges.</h4>
+            </div>
+
 
             <h3>Safety Rules</h3>
             <p>All participants must:</p>
@@ -212,8 +254,7 @@
             <h3>Can children use the makerspace?</h3>
             <p>
                 Some activities may be appropriate for families or younger participants, but age requirements depend on
-                the workshop and equipment involved.
-                The website should not imply unrestricted access for children.
+                the workshop and equipment involved.    
             </p>
 
             <h3>Do I need safety training?</h3>

@@ -485,3 +485,31 @@ body > footer p {
     color: var(--color-oak-light);
     font-size: 0.9rem;
 }
+
+/* =========================
+   DESKTOP (1025px and wider)
+========================= */
+ 
+@media (min-width: 1025px) {
+    :root {
+        --container-width: 1200px;
+    }
+}
+
+/* =========================
+   LAPTOP (1024px and narrower)
+========================= */
+ 
+@media (max-width: 1024px) {
+    :root {
+        --space-5: 3rem;
+    }
+ 
+    h1 {
+        font-size: 2.5rem;
+    }
+ 
+    #home h2 {
+        font-size: 2.2rem;
+    }
+}

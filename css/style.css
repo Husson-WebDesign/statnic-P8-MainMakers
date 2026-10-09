@@ -513,3 +513,111 @@ body > footer p {
         font-size: 2.2rem;
     }
 }
+
+/* =========================
+   TABLET (768px and narrower)
+========================= */
+ 
+@media (max-width: 768px) {
+    :root {
+        --space-4: 2rem;
+        --space-5: 2.5rem;
+    }
+ 
+    h1 {
+        font-size: 2.25rem;
+    }
+ 
+    h2 {
+        font-size: 1.75rem;
+    }
+ 
+    body > header h1 {
+        font-size: 2rem;
+    }
+ 
+    #home h2 {
+        font-size: 2rem;
+    }
+ 
+    nav a {
+        padding: 0.75rem 0.5rem;
+    }
+ 
+    .workshop-grid,
+    .membership-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* =========================
+   MOBILE (600px and narrower) - CHANGED (new)
+========================= */
+ 
+@media (max-width: 600px) {
+    :root {
+        --space-3: 1.25rem;
+        --space-4: 1.75rem;
+        --space-5: 2rem;
+    }
+ 
+    h1 {
+        font-size: 2rem;
+    }
+ 
+    h2 {
+        font-size: 1.5rem;
+    }
+ 
+    h3 {
+        font-size: 1.2rem;
+    }
+ 
+    body > header h1 {
+        font-size: 1.75rem;
+    }
+ 
+    body > header p {
+        font-size: 1rem;
+    }
+ 
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+ 
+    nav a {
+        padding: 0.75rem 1rem;
+    }
+ 
+    #home h2 {
+        font-size: 1.75rem;
+        max-width: none;
+    }
+ 
+    #home a {
+        display: block;
+        text-align: center;
+    }
+ 
+    .workshop-grid,
+    .membership-grid {
+        grid-template-columns: 1fr;
+    }
+ 
+    .staff-card {
+        flex-basis: 100%;
+    }
+ 
+    article,
+    .card,
+    .workshop-card,
+    .safety-note {
+        padding: var(--space-2);
+    }
+ 
+    button,
+    input[type="submit"] {
+        width: 100%;
+    }
+}

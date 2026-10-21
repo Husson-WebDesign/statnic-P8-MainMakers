@@ -50,26 +50,47 @@
                 <li>and any questions about the activity.</li>
             </ul>
 
-            <form class="contact-form" action="#" method="post">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
+            <form class="contact-form" id="contact-form" action="#" method="post" novalidate>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required aria-describedby="name-error">
+            <span class="field-error" id="name-error"></span>
 
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required aria-describedby="email-error">
+            <span class="field-error" id="email-error"></span>
 
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="(207) 555-0108" maxlength="14"
+                inputmode="tel" autocomplete="tel" required aria-describedby="phone-error">
+            <span class="field-error" id="phone-error"></span>
 
-                <label for="workshop">Workshop of Interest</label>
-                <input type="text" id="workshop" name="workshop" placeholder="e.g. Soldering Basics">
+            <label for="workshop">Workshop of Interest</label>
+            <select id="workshop" name="workshop" required aria-describedby="workshop-error">
+                <option value="">Choose a workshop...</option>
+                <option value="Build a Wooden Storage Crate">Build a Wooden Storage Crate</option>
+                <option value="Introduction to Woodworking Tools">Introduction to Woodworking Tools</option>
+                <option value="Handmade Fall Wreath">Handmade Fall Wreath</option>
+                <option value="Soldering Basics">Soldering Basics</option>
+                <option value="Design Your First 3D Print">Design Your First 3D Print</option>
+                <option value="Build a Small Wooden Shelf">Build a Small Wooden Shelf</option>
+                <option value="Not sure yet">Not sure yet</option>
+            </select>
+            <span class="field-error" id="workshop-error"></span>
 
-                <label for="experience">Experience Level</label>
-                <input type="text" id="experience" name="experience" placeholder="e.g. Beginner">
+            <label for="experience">Experience Level</label>
+            <select id="experience" name="experience" required aria-describedby="experience-error">
+                <option value="">Choose your experience level...</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+            <span class="field-error" id="experience-error"></span>
 
-                <label for="message">Questions or Notes</label>
+            <label for="message">Questions or Notes (optional)</label>
                 <textarea id="message" name="message"></textarea>
 
                 <button type="submit">Send Message</button>
+                <p id="form-status" role="status" aria-live="polite"></p>
             </form>
 
             <div class="safety-note">

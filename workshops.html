@@ -50,6 +50,16 @@
 
             <h4>Workshop prices include standard instructional materials unless otherwise stated. Additional personal
                 project materials may require separate purchase.</h4>
+        
+        <div class="sort-control">
+            <label for="sort-workshops">Sort by price</label>
+        <select id="sort-workshops">
+            <option value="default">Default order</option>
+            <option value="price-asc">Least expensive to most expensive</option>
+            <option value="price-desc">Most expensive to least expensive</option>
+        </select>
+            <p id="sort-status" role="status" aria-live="polite"></p>
+        </div>
             
         <div class="workshop-grid">
             <article class="workshop-card">

@@ -37,11 +37,13 @@ if (menuButton && mainNavigation) {
 // =========================
 const contactForm = document.querySelector("#contact-form");
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ERROR_COLOR = "#b00020"; // red used for all form warning text
 
 function showError(input, message) {
     const errorElement = document.querySelector("#" + input.id + "-error");
     if (errorElement) {
         errorElement.textContent = message;
+        errorElement.style.color = ERROR_COLOR;
     }
     input.setAttribute("aria-invalid", "true");
 }
@@ -166,6 +168,8 @@ if (contactForm) {
         if (firstInvalidInput !== null) {
             formStatus.textContent = "Please fix the highlighted fields before sending.";
             formStatus.className = "form-status error";
+            formStatus.style.color = ERROR_COLOR;
+            formStatus.style.fontWeight = "bold";
             firstInvalidInput.focus();
             return;
         }
@@ -175,6 +179,8 @@ if (contactForm) {
             "This is a demonstration of front-end behavior: your message was not actually sent. " +
             "To reach us, please call 207-555-0108 or email julia@mainemakers.example.";
         formStatus.className = "form-status success";
+        formStatus.style.color = "";
+        formStatus.style.fontWeight = "";
         contactForm.reset();
     });
 }

@@ -4,6 +4,10 @@
 // Marks the page so CSS only shows JavaScript-dependent controls when JS is running.
 document.documentElement.classList.add("js-enabled");
 
+import getFocusableElements from './get-focusable-elements.js';
+
+
+
 
 // =========================
 // Mobile Navigation
@@ -331,6 +335,16 @@ class BurgerMenu extends HTMLElement {
   connectedCallback() {
     this.initialMarkup = this.innerHTML;
     this.render();
+    
+    const observer = new ResizeObserver(observedItems => {
+        const {contentRect} = observedItems[0];
+        this.state.enabled = contentRect.width <= this.maxWidth;
+    });
+
+    // We want to watch the parent like a hawk
+    observer.observe(this.parentNode);
+
+
   }
 
   render() {
@@ -415,4 +429,27 @@ processStateChange() {
       break;
   }
 }
+
+
+manageFocus() {
+  if (!this.state.enabled) {
+    this.focusableElements.forEach(element => element.removeAttribute('tabindex'));
+    return;
+  }
+
+  switch (this.state.status) {
+    case 'open':
+      this.focusableElements.forEach(element => element.removeAttribute('tabindex'));
+      break;
+    case 'closed':
+      [...this.focusableElements]
+        .filter(
+          element => element.getAttribute('data-element') !== 'burger-menu-trigger'
+        )
+        .forEach(element => element.setAttribute('tabindex', '-1'));
+      break;
+  }
+}
+
+
 

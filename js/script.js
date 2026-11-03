@@ -1,455 +1,320 @@
-// Maine Makers Workshop - Phase 3
-// Each section checks that its elements exist, so this file is safe on every page.
+"use strict";
 
-// Marks the page so CSS only shows JavaScript-dependent controls when JS is running.
 document.documentElement.classList.add("js-enabled");
 
-import getFocusableElements from './get-focusable-elements.js';
+const DATA_PATHS = {
+  workshops: "data/workshops.json",
+  memberships: "data/memberships.json"
+};
 
-
-
-
-// =========================
-// Mobile Navigation
-// =========================
-const menuButton = document.querySelector(".menu-toggle");
-const mainNavigation = document.querySelector("#main-navigation");
-
-function setMenuState(isOpen) {
-    mainNavigation.classList.toggle("open", isOpen);
-    menuButton.setAttribute("aria-expanded", String(isOpen));
-    menuButton.textContent = isOpen ? "Close" : "Menu";
+async function loadJSON(path) {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`Could not load ${path}: ${response.status}`);
+  return response.json();
 }
 
-if (menuButton && mainNavigation) {
-    menuButton.addEventListener("click", function () {
-        setMenuState(!mainNavigation.classList.contains("open"));
-    });
-
-    // Escape closes the menu and returns focus to the button.
-    document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape" && mainNavigation.classList.contains("open")) {
-            setMenuState(false);
-            menuButton.focus();
-        }
-    });
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[char]);
 }
 
-
-// =========================
-// Form Validation
-// =========================
-const contactForm = document.querySelector("#contact-form");
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const ERROR_COLOR = "#b00020"; // red used for all form warning text
-
-function showError(input, message) {
-    const errorElement = document.querySelector("#" + input.id + "-error");
-    if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.style.color = ERROR_COLOR;
+function setCurrentPage() {
+  const current = location.pathname.split("/").pop() || "index.html";
+  document.querySelectorAll(".site-nav a").forEach(link => {
+    if (link.getAttribute("href") === current) {
+      link.setAttribute("aria-current", "page");
     }
-    input.setAttribute("aria-invalid", "true");
+  });
 }
 
-function clearError(input) {
-    const errorElement = document.querySelector("#" + input.id + "-error");
-    if (errorElement) {
-        errorElement.textContent = "";
+function setupNavigation() {
+  const button = document.querySelector(".menu-toggle");
+  const nav = document.querySelector("#site-nav");
+  if (!button || !nav) return;
+
+  const setOpen = open => {
+    nav.classList.toggle("open", open);
+    button.setAttribute("aria-expanded", String(open));
+    button.textContent = open ? "Close" : "Menu";
+  };
+
+  button.addEventListener("click", () => {
+    setOpen(button.getAttribute("aria-expanded") !== "true");
+  });
+  nav.querySelectorAll("a").forEach(link => link.addEventListener("click", () => setOpen(false)));
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && button.getAttribute("aria-expanded") === "true") {
+      setOpen(false);
+      button.focus();
     }
-    input.removeAttribute("aria-invalid");
+  });
+  document.addEventListener("click", event => {
+    if (!nav.contains(event.target) && !button.contains(event.target)) setOpen(false);
+  });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 680) setOpen(false);
+  });
 }
 
-// Returns a validator that gives an error message, or "" when the field is valid.
-function validateRequired(message) {
-    return function (input) {
-        if (input.type === "checkbox") {
-            return input.checked ? "" : message;
-        }
-        return input.value.trim() === "" ? message : "";
-    };
+function workshopCard(workshop) {
+  const date = escapeHTML(workshop.dateLabel || workshop.date || "Date to be confirmed");
+  return `
+    <article class="workshop-card" data-category="${escapeHTML(workshop.category)}" data-skill="${escapeHTML(workshop.skillLevel)}" data-price="${Number(workshop.price)}" data-name="${escapeHTML(workshop.name)}">
+      <div class="card-topline"><span class="pill">${escapeHTML(workshop.category)}</span><span class="pill sample">Sample listing</span></div>
+      <h3>${escapeHTML(workshop.name)}</h3>
+      <p class="description">${escapeHTML(workshop.description)}</p>
+      <dl class="workshop-meta">
+        <div><dt>Sample date</dt><dd>${date}</dd></div>
+        <div><dt>Duration</dt><dd>${escapeHTML(workshop.duration)}</dd></div>
+        <div><dt>Skill level</dt><dd>${escapeHTML(workshop.skillLevel)}</dd></div>
+        <div><dt>Sample price</dt><dd>$${Number(workshop.price).toFixed(2)}</dd></div>
+        <div><dt>Sample seats</dt><dd>${Number(workshop.availableSeats)} (not live)</dd></div>
+        <div><dt>Materials</dt><dd>${escapeHTML(workshop.materialsIncluded || "See details")}</dd></div>
+      </dl>
+      <details><summary>Full workshop details</summary><p>${escapeHTML(workshop.details)}</p><p><strong>Materials:</strong> ${escapeHTML(workshop.materials)}</p></details>
+      <div class="card-actions"><a class="button button-primary" href="contact.html?type=workshop&topic=${encodeURIComponent(workshop.id)}">Ask about this workshop</a></div>
+    </article>`;
 }
 
-function validateEmail(input) {
-    const email = input.value.trim();
-    if (email === "") {
-        return "Please enter your email address.";
-    }
-    if (!emailPattern.test(email)) {
-        return "Please enter a valid email address, like name@example.com.";
-    }
-    return "";
+function membershipCard(plan, featured = false) {
+  return `
+    <article class="membership-card ${featured ? "featured" : ""}">
+      <p class="eyebrow">${escapeHTML(plan.accessPeriod)} access</p>
+      <h3>${escapeHTML(plan.name)}</h3>
+      <p class="price">$${Number(plan.price).toFixed(0)} <small>${escapeHTML(plan.priceUnit)}</small></p>
+      <p>${escapeHTML(plan.summary)}</p>
+      <h4>Includes</h4><ul>${plan.includes.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+      <h4>Important limitations</h4><ul>${plan.limitations.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+      <a class="button ${featured ? "button-primary" : "button-outline"}" href="contact.html?type=membership&topic=${encodeURIComponent(plan.id)}">Ask about this plan</a>
+    </article>`;
 }
 
-// Turns whatever was typed or pasted into (207) 555-0108 as the visitor types.
-function formatPhone(value) {
-    let digits = value.replace(/\D/g, "");
-    if (digits.length === 11 && digits.charAt(0) === "1") {
-        digits = digits.slice(1); // ignore a leading country code like +1
+async function renderHome() {
+  const featured = document.querySelector("#home-featured");
+  const memberTarget = document.querySelector("#home-memberships");
+
+  if (featured) {
+    try {
+      const data = await loadJSON(DATA_PATHS.workshops);
+      const picks = ["wooden-storage-crate", "soldering-basics", "first-3d-print"];
+      featured.innerHTML = data.workshops.filter(w => picks.includes(w.id)).map(workshopCard).join("");
+    } catch {
+      featured.innerHTML = '<p class="error-message">Featured workshop information is temporarily unavailable. Visit the Workshops page or try again later.</p>';
     }
-    digits = digits.slice(0, 10);
-
-    if (digits.length === 0) {
-        return "";
-    }
-    if (digits.length <= 3) {
-        return "(" + digits;
-    }
-    if (digits.length <= 6) {
-        return "(" + digits.slice(0, 3) + ") " + digits.slice(3);
-    }
-    return "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
-}
-
-function validatePhone(input) {
-    const phone = input.value.trim();
-    if (phone === "") {
-        return "Please enter your phone number.";
-    }
-    if (!/^\(\d{3}\) \d{3}-\d{4}$/.test(phone)) {
-        return "Please enter a 10-digit phone number, like (207) 555-0108.";
-    }
-    return "";
-}
-
-function validateField(input, validator) {
-    const message = validator(input);
-    if (message === "") {
-        clearError(input);
-        return true;
-    }
-    showError(input, message);
-    return false;
-}
-
-if (contactForm) {
-    const nameInput = contactForm.querySelector("#name");
-    const emailInput = contactForm.querySelector("#email");
-    const phoneInput = contactForm.querySelector("#phone");
-    const workshopInput = contactForm.querySelector("#workshop");
-    const experienceInput = contactForm.querySelector("#experience");
-    const formStatus = document.querySelector("#form-status");
-
-    // Every field listed here is required. Notes (#message) is intentionally left out.
-    const fieldRules = [
-        { input: nameInput, validator: validateRequired("Please enter your name.") },
-        { input: emailInput, validator: validateEmail },
-        { input: phoneInput, validator: validatePhone },
-        { input: workshopInput, validator: validateRequired("Please choose a workshop.") },
-        { input: experienceInput, validator: validateRequired("Please choose your experience level.") }
-    ];
-
-    // Auto-format the phone number as the visitor types.
-    // This is registered before the re-check listener below so the value is formatted first.
-    phoneInput.addEventListener("input", function () {
-        phoneInput.value = formatPhone(phoneInput.value);
-    });
-
-    // Re-check a field as the visitor fixes it.
-    fieldRules.forEach(function (rule) {
-        ["input", "change"].forEach(function (eventName) {
-            rule.input.addEventListener(eventName, function () {
-                if (rule.input.hasAttribute("aria-invalid")) {
-                    validateField(rule.input, rule.validator);
-                }
-            });
-        });
-    });
-
-    contactForm.addEventListener("submit", function (event) {
-        // There is no backend, so the form is never actually submitted.
-        event.preventDefault();
-
-        let firstInvalidInput = null;
-
-        fieldRules.forEach(function (rule) {
-            const isValid = validateField(rule.input, rule.validator);
-            if (!isValid && firstInvalidInput === null) {
-                firstInvalidInput = rule.input;
-            }
-        });
-
-        if (firstInvalidInput !== null) {
-            formStatus.textContent = "Please fix the highlighted fields before sending.";
-            formStatus.className = "form-status error";
-            formStatus.style.color = ERROR_COLOR;
-            formStatus.style.fontWeight = "bold";
-            firstInvalidInput.focus();
-            return;
-        }
-
-        formStatus.textContent =
-            "Thank you, " + nameInput.value.trim() + ". Your form passed validation. " +
-            "This is a demonstration of front-end behavior: your message was not actually sent. " +
-            "To reach us, please call 207-555-0108 or email julia@mainemakers.example.";
-        formStatus.className = "form-status success";
-        formStatus.style.color = "";
-        formStatus.style.fontWeight = "";
-        contactForm.reset();
-    });
-}
-
-
-// =========================
-// Workshop Category Filter
-// =========================
-const filterButtons = document.querySelectorAll(".filter-button");
-const workshopCards = document.querySelectorAll(".workshop-card");
-const filterResult = document.querySelector("#filter-result");
-
-function filterWorkshops(category) {
-    let visibleCount = 0;
-
-    workshopCards.forEach(function (card) {
-        const matches = category === "all" || card.dataset.category === category;
-        card.hidden = !matches;
-        if (matches) {
-            visibleCount += 1;
-        }
-    });
-
-    filterButtons.forEach(function (button) {
-        const isActive = button.dataset.category === category;
-        button.classList.toggle("active", isActive);
-        button.setAttribute("aria-pressed", String(isActive));
-    });
-
-    if (filterResult) {
-        filterResult.textContent =
-            "Showing " + visibleCount + " of " + workshopCards.length + " workshops.";
-    }
-}
-
-filterButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-        filterWorkshops(button.dataset.category);
-    });
-});
-
-
-// =========================
-// Workshop Price Sort
-// =========================
-const sortSelect = document.querySelector("#sort-workshops");
-const workshopGrid = document.querySelector(".workshop-grid");
-const sortStatus = document.querySelector("#sort-status");
-
-// Reads the price from the "$45" tag on a card. Returns null if a card has no price tag.
-function getWorkshopPrice(card) {
-    const tags = card.querySelectorAll(".tag");
-    for (let i = 0; i < tags.length; i += 1) {
-        const match = tags[i].textContent.trim().match(/^\$(\d+(?:\.\d+)?)$/);
-        if (match) {
-            return parseFloat(match[1]);
-        }
-    }
-    return null;
-}
-
-if (sortSelect && workshopGrid) {
-    // Remember the page's original order so "Default order" can restore it.
-    const originalOrder = Array.from(workshopGrid.querySelectorAll(".workshop-card"));
-
-    const sortMessages = {
-        "default": "Showing workshops in default order.",
-        "price-asc": "Sorted by price, least expensive to most expensive.",
-        "price-desc": "Sorted by price, most expensive to least expensive."
-    };
-
-    const sortWorkshops = function (mode) {
-        const cards = originalOrder.slice();
-
-        if (mode === "price-asc" || mode === "price-desc") {
-            const direction = mode === "price-asc" ? 1 : -1;
-
-            cards.sort(function (a, b) {
-                const priceA = getWorkshopPrice(a);
-                const priceB = getWorkshopPrice(b);
-
-                // Same price (or both missing): keep the original order.
-                if (priceA === priceB) {
-                    return originalOrder.indexOf(a) - originalOrder.indexOf(b);
-                }
-                // Cards without a price always go last.
-                if (priceA === null) {
-                    return 1;
-                }
-                if (priceB === null) {
-                    return -1;
-                }
-                return (priceA - priceB) * direction;
-            });
-        }
-
-        // Re-appending moves each card into its new position. Hidden state is kept.
-        cards.forEach(function (card) {
-            workshopGrid.appendChild(card);
-        });
-
-        if (sortStatus) {
-            sortStatus.textContent = sortMessages[mode] || sortMessages["default"];
-        }
-    };
-
-    sortSelect.addEventListener("change", function () {
-        sortWorkshops(sortSelect.value);
-    });
-
-    // Apply on load in case the browser restored a previous selection.
-    sortWorkshops(sortSelect.value);
-}
-
-// =========================
-// Hamburger Menu
-// =========================
-
-class BurgerMenu extends HTMLElement {
-  constructor() {
-    super();
-
-    const self = this;
-
-    this.state = new Proxy(
-      {
-        status: 'open',
-        enabled: false
-      },
-      {
-        set(state, key, value) {
-          const oldValue = state[key];
-
-          state[key] = value;
-          if (oldValue !== value) {
-            self.processStateChange();
-          }
-          return state;
-        }
-      }
-    );
   }
 
-  get maxWidth() {
-    return parseInt(this.getAttribute('max-width') || 9999, 10);
-  }
-
-  connectedCallback() {
-    this.initialMarkup = this.innerHTML;
-    this.render();
-    
-    const observer = new ResizeObserver(observedItems => {
-        const {contentRect} = observedItems[0];
-        this.state.enabled = contentRect.width <= this.maxWidth;
-    });
-
-    // We want to watch the parent like a hawk
-    observer.observe(this.parentNode);
-
-
-  }
-
-  render() {
-    this.innerHTML = `
-      <div class="burger-menu" data-element="burger-root">
-        <button class="burger-menu__trigger" data-element="burger-menu-trigger" type="button" aria-label="Open menu">
-          <span class="burger-menu__bar" aria-hidden="true"></span>
-        </button>
-        <div class="burger-menu__panel" data-element="burger-menu-panel">
-          ${this.initialMarkup} 
-        </div>
-      </div>
-    `;
-
-    this.postRender();
+  if (memberTarget) {
+    try {
+      const data = await loadJSON(DATA_PATHS.memberships);
+      memberTarget.innerHTML = data.memberships.map((plan, index) => membershipCard(plan, index === 1)).join("");
+    } catch {
+      memberTarget.innerHTML = '<p class="error-message">Membership information is temporarily unavailable. Please visit the Memberships page later.</p>';
+    }
   }
 }
 
-if ('customElements' in window) {
-  customElements.define('burger-menu', BurgerMenu);
-}
+async function setupWorkshops() {
+  const grid = document.querySelector("#workshop-grid");
+  if (!grid) return;
 
-export default BurgerMenu;
+  const error = document.querySelector("#workshop-error");
+  const categorySelect = document.querySelector("#category-filter");
+  const skillSelect = document.querySelector("#skill-filter");
+  const sortSelect = document.querySelector("#sort-workshops");
+  const clearButton = document.querySelector("#clear-filters");
+  const result = document.querySelector("#filter-result");
 
-
-postRender() {
-  this.trigger = this.querySelector('[data-element="burger-menu-trigger"]');
-  this.panel = this.querySelector('[data-element="burger-menu-panel"]');
-  this.root = this.querySelector('[data-element="burger-root"]');
-  this.focusableElements = getFocusableElements(this);
-
-  if (this.trigger && this.panel) {
-    this.toggle();
-
-    this.trigger.addEventListener('click', evt => {
-      evt.preventDefault();
-
-      this.toggle();
-    });
-
-    document.addEventListener('focusin', () => {
-      if (!this.contains(document.activeElement)) {
-        this.toggle('closed');
-      }
-    });
-
+  let workshops;
+  try {
+    const data = await loadJSON(DATA_PATHS.workshops);
+    workshops = data.workshops;
+  } catch (err) {
+    grid.hidden = true;
+    error.hidden = false;
+    result.textContent = "Workshop information is unavailable.";
     return;
   }
 
-  this.innerHTML = this.initialMarkup;
+  const params = new URLSearchParams(location.search);
+  if (params.has("category") && [...categorySelect.options].some(o => o.value === params.get("category"))) {
+    categorySelect.value = params.get("category");
+  }
+
+  function update() {
+    const category = categorySelect.value;
+    const skill = skillSelect.value;
+    const sort = sortSelect.value;
+
+    let visible = workshops.filter(w =>
+      (category === "all" || w.category === category) &&
+      (skill === "all" || w.skillLevel === skill)
+    );
+
+    if (sort === "price-asc") visible.sort((a, b) => a.price - b.price);
+    if (sort === "price-desc") visible.sort((a, b) => b.price - a.price);
+    if (sort === "name") visible.sort((a, b) => a.name.localeCompare(b.name));
+
+    grid.innerHTML = visible.length
+      ? visible.map(workshopCard).join("")
+      : '<div class="notice"><strong>No workshops match those filters.</strong><p>Try another category or skill level, or clear your choices to see all sample workshops.</p></div>';
+
+    result.textContent = `Showing ${visible.length} of ${workshops.length} sample workshops. Dates and seat counts are not live.`;
+  }
+
+  [categorySelect, skillSelect, sortSelect].forEach(control => control.addEventListener("change", update));
+
+  clearButton.addEventListener("click", () => {
+    categorySelect.value = "all";
+    skillSelect.value = "all";
+    sortSelect.value = "default";
+    history.replaceState({}, "", location.pathname);
+    update();
+    categorySelect.focus();
+  });
+
+  update();
 }
 
+async function setupMemberships() {
+  const grid = document.querySelector("#membership-grid");
+  if (!grid) return;
 
-toggle(forcedStatus) {
-  if (forcedStatus) {
-    if (this.state.status === forcedStatus) {
+  const error = document.querySelector("#membership-error");
+
+  try {
+    const data = await loadJSON(DATA_PATHS.memberships);
+    grid.innerHTML = data.memberships.map((plan, index) => membershipCard(plan, index === 1)).join("");
+  } catch {
+    grid.hidden = true;
+    error.hidden = false;
+  }
+}
+
+async function setupInquiryForm() {
+  const form = document.querySelector("#inquiry-form");
+  if (!form) return;
+
+  const typeSelect = document.querySelector("#inquiry-type");
+  const topicSelect = document.querySelector("#inquiry-topic");
+  const status = document.querySelector("#form-status");
+  const preview = document.querySelector("#inquiry-preview");
+  const previewContent = document.querySelector("#preview-content");
+
+  let workshopData = [];
+  let membershipData = [];
+
+  try {
+    const [wData, mData] = await Promise.all([
+      loadJSON(DATA_PATHS.workshops),
+      loadJSON(DATA_PATHS.memberships)
+    ]);
+    workshopData = wData.workshops;
+    membershipData = mData.memberships;
+  } catch {
+    status.textContent = "Some inquiry choices could not load. You can still prepare a general question.";
+  }
+
+  function populateTopics() {
+    const type = typeSelect.value;
+    const current = topicSelect.value;
+    let options = [];
+
+    if (type === "workshop") options = workshopData.map(item => ({value: item.id, label: item.name}));
+    if (type === "membership") options = membershipData.map(item => ({value: item.id, label: item.name}));
+
+    topicSelect.innerHTML = '<option value="">Choose an option</option>' +
+      options.map(item => `<option value="${escapeHTML(item.value)}">${escapeHTML(item.label)}</option>`).join("");
+
+    if (options.some(item => item.value === current)) topicSelect.value = current;
+    topicSelect.disabled = type === "general" || type === "";
+
+    if (type === "general") topicSelect.innerHTML = '<option value="">Not applicable</option>';
+  }
+
+  typeSelect.addEventListener("change", populateTopics);
+
+  const params = new URLSearchParams(location.search);
+  if (["workshop", "membership", "general"].includes(params.get("type"))) {
+    typeSelect.value = params.get("type");
+    populateTopics();
+    if (params.has("topic")) topicSelect.value = params.get("topic");
+  } else {
+    populateTopics();
+  }
+
+  function setFieldError(id, message) {
+    const input = document.getElementById(id);
+    const error = document.getElementById(`${id}-error`);
+    if (error) error.textContent = message;
+    if (message) input.setAttribute("aria-invalid", "true");
+    else input.removeAttribute("aria-invalid");
+  }
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = document.querySelector("#inquiry-name").value.trim();
+    const email = document.querySelector("#inquiry-email").value.trim();
+    const type = typeSelect.value;
+    let valid = true;
+
+    setFieldError("inquiry-name", "");
+    setFieldError("inquiry-email", "");
+    setFieldError("inquiry-type", "");
+
+    if (!type) {
+      setFieldError("inquiry-type", "Choose an inquiry type.");
+      valid = false;
+    }
+    if (!name) {
+      setFieldError("inquiry-name", "Enter your name.");
+      valid = false;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setFieldError("inquiry-email", "Enter a valid email address.");
+      valid = false;
+    }
+
+    if (!valid) {
+      status.textContent = "Please review the highlighted fields.";
+      form.querySelector('[aria-invalid="true"]')?.focus();
+      preview.hidden = true;
       return;
     }
 
-    this.state.status = forcedStatus;
-  } else {
-    this.state.status = this.state.status === 'closed' ? 'open' : 'closed';
-  }
+    const topicText = topicSelect.selectedOptions[0]?.textContent || "Not specified";
+    const values = [
+      ["Inquiry type", typeSelect.selectedOptions[0].textContent],
+      ["Workshop or membership", topicText],
+      ["Name", name],
+      ["Email", email],
+      ["Experience", document.querySelector("#inquiry-experience").value || "Not specified"],
+      ["Question", document.querySelector("#inquiry-message").value.trim() || "No additional question provided"]
+    ];
+
+    previewContent.innerHTML = values.map(([label, value]) =>
+      `<dt>${escapeHTML(label)}</dt><dd>${escapeHTML(value)}</dd>`
+    ).join("");
+
+    preview.hidden = false;
+    status.textContent = "Your inquiry preview is ready. Nothing has been sent or saved.";
+    preview.scrollIntoView({behavior: "smooth", block: "nearest"});
+  });
+
+  document.querySelector("#edit-inquiry").addEventListener("click", () => {
+    preview.hidden = true;
+    status.textContent = "You can edit your information and preview it again.";
+    document.querySelector("#inquiry-name").focus();
+  });
 }
 
-
-processStateChange() {
-  this.root.setAttribute('status', this.state.status);
-  this.root.setAttribute('enabled', this.state.enabled ? 'true' : 'false');
-
-  this.manageFocus();
-
-  switch (this.state.status) {
-    case 'closed':
-      this.trigger.setAttribute('aria-expanded', 'false');
-      this.trigger.setAttribute('aria-label', 'Open menu');
-      break;
-    case 'open':
-    case 'initial':
-      this.trigger.setAttribute('aria-expanded', 'true');
-      this.trigger.setAttribute('aria-label', 'Close menu');
-      break;
-  }
-}
-
-
-manageFocus() {
-  if (!this.state.enabled) {
-    this.focusableElements.forEach(element => element.removeAttribute('tabindex'));
-    return;
-  }
-
-  switch (this.state.status) {
-    case 'open':
-      this.focusableElements.forEach(element => element.removeAttribute('tabindex'));
-      break;
-    case 'closed':
-      [...this.focusableElements]
-        .filter(
-          element => element.getAttribute('data-element') !== 'burger-menu-trigger'
-        )
-        .forEach(element => element.setAttribute('tabindex', '-1'));
-      break;
-  }
-}
-
-
-
+document.addEventListener("DOMContentLoaded", () => {
+  setCurrentPage();
+  setupNavigation();
+  document.querySelectorAll("[data-year]").forEach(el => el.textContent = new Date().getFullYear());
+  renderHome();
+  setupWorkshops();
+  setupMemberships();
+  setupInquiryForm();
+});

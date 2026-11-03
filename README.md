@@ -30,3 +30,16 @@ This project will eventually use:
 - [ ] Responsive Design
 - [ ] JavaScript
 - [ ] Final Client Website
+
+## Phase 4 Client Requirements Audit
+
+- [x] All required client pages are included.
+- [x] Business contact information is correct.
+- [x] Required services are included.
+- [x] Required business hours are included.
+- [x] Client-approved prices are accurate.
+- [x] Required policies and FAQs are included.
+- [x] Website navigation works.
+- [x] Website is responsive.
+- [x] JavaScript features work.
+- [x] Website has been tested through GitHub Pages.

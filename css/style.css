@@ -1,18 +1,3 @@
-/* =========================================================
-   MAINE MAKERS WORKSHOP
-   Main stylesheet
-
-   This stylesheet controls the visual design, layout,
-   typography, accessibility, and responsive behavior
-   of the Maine Makers Workshop website.
-   ========================================================= */
-
-
-/* =========================================================
-   1. DESIGN VARIABLES
-   Centralized colors, fonts, borders, and spacing styles.
-   Using variables keeps the design consistent across pages.
-   ========================================================= */
 
 :root {
   --ink: #202a2b;
@@ -27,21 +12,11 @@
   --gold-pale: #f7e9c9;
   --rust: #a8442f;
   --line: #d9d5c9;
-
-  /* Subtle shadows and rounded corners create visual consistency. */
   --shadow: 0 16px 40px rgba(25, 44, 43, .09);
   --radius: 18px;
-
-  /* Display and body fonts establish a clear typographic hierarchy. */
   --font-body: "DM Sans", Arial, sans-serif;
   --font-display: "Space Grotesk", Arial, sans-serif;
 }
-
-
-/* =========================================================
-   2. GLOBAL STYLES
-   Establishes consistent sizing, typography, and link behavior.
-   ========================================================= */
 
 * {
   box-sizing: border-box;
@@ -85,18 +60,10 @@ select {
   cursor: pointer;
 }
 
-
-/* Accessibility: visible keyboard focus helps users navigate
-   links, buttons, and form controls without a mouse. */
-
 :focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 3px;
 }
-
-
-/* Skip link allows keyboard and screen-reader users
-   to bypass repeated navigation and reach the main content. */
 
 .skip-link {
   position: absolute;
@@ -112,11 +79,7 @@ select {
   top: 1rem;
 }
 
-
-/* =========================================================
-   3. HEADER AND NAVIGATION
-   Creates the dark branded header and navigation links.
-   ========================================================= */
+/* HEADER AND NAVIGATION */
 
 .site-header {
   position: relative;
@@ -141,6 +104,26 @@ select {
   gap: .75rem;
   color: white;
   text-decoration: none;
+  transition: color .2s ease;
+}
+
+.brand:hover,
+.brand:focus,
+.brand:focus-visible {
+  color: #f6f4ec;
+  text-decoration: none;
+}
+
+.brand:hover .brand-name,
+.brand:focus .brand-name,
+.brand:focus-visible .brand-name {
+  color: #f6f4ec;
+}
+
+.brand:hover .brand-name span,
+.brand:focus .brand-name span,
+.brand:focus-visible .brand-name span {
+  color: #e2a63b;
 }
 
 .brand-mark {
@@ -163,6 +146,7 @@ select {
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: .04em;
+  color: white;
 }
 
 .brand-name span {
@@ -187,15 +171,11 @@ select {
   font-weight: 600;
 }
 
-/* Hover and current-page states make navigation easier to understand. */
-
 .site-nav a:hover,
 .site-nav a[aria-current="page"] {
   color: var(--navy-deep);
   background: var(--gold);
 }
-
-/* The mobile navigation button is hidden on larger screens. */
 
 .menu-toggle {
   display: none;
@@ -206,11 +186,7 @@ select {
   padding: .55rem 1rem;
 }
 
-
-/* =========================================================
-   4. HOMEPAGE HERO
-   Creates the main introductory section and decorative artwork.
-   ========================================================= */
+/* HOMEPAGE HERO */
 
 .hero {
   min-height: 570px;
@@ -283,74 +259,6 @@ p {
   font-size: 1.12rem;
 }
 
-.tagline {
-  margin-top: 1.8rem;
-  color: var(--navy);
-  font-family: var(--font-display);
-  font-weight: 600;
-}
-
-/* =========================================================
-   5. Hero Artwork
-   ========================================================= */ 
-
- /* Homepage hero artwork adjustments */
-    .hero-art {
-      position: relative;
-      min-height: 400px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .hero-art .art-label {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: 10;
-      transform: translate(-50%, -50%);
-      display: block;
-      width: max-content;
-      max-width: 90%;
-      padding: 18px 24px;
-      background: #f5efe3;
-      color: #183b35;
-      border: 2px solid #183b35;
-      border-radius: 6px;
-      text-align: center;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(15px, 2vw, 22px);
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      line-height: 1.4;
-      box-shadow: 8px 8px 0 #c99b4a;
-      white-space: nowrap;
-    }
-
-    /* Remove decorative elements that distract from the message */
-    .hero-art .art-circle,
-    .hero-art .art-stamp {
-      display: none !important;
-    }
-
-    @media (max-width: 600px) {
-      .hero-art {
-        min-height: 280px;
-      }
-
-      .hero-art .art-label {
-        padding: 14px 16px;
-        letter-spacing: 0.07em;
-        font-size: 14px;
-      }
-    }
-
-/* =========================================================
-   5. BUTTONS AND CALLS TO ACTION
-   Shared button styles maintain consistency across pages.
-   ========================================================= */
-
 .button-row {
   display: flex;
   flex-wrap: wrap;
@@ -419,12 +327,14 @@ p {
   font-size: .88rem;
 }
 
+.tagline {
+  margin-top: 1.8rem;
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
 
-/* =========================================================
-   6. DECORATIVE HERO ILLUSTRATION
-   CSS shapes provide visual interest without using
-   unapproved photographs of the business or its staff.
-   ========================================================= */
+/* HERO ARTWORK */
 
 .hero-art {
   position: relative;
@@ -443,14 +353,37 @@ p {
   border-radius: inherit;
 }
 
+/* ART LABEL: CENTERED WITH A NAVY BACKGROUND */
+
 .art-label {
   position: absolute;
-  top: 2.5rem;
-  left: 2.5rem;
-  z-index: 2;
-  color: #e8e3d6;
-  font-size: .7rem;
-  letter-spacing: .2em;
+  top: 50%;
+  left: 50%;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: max-content;
+  max-width: 85%;
+  padding: 1rem 1.5rem;
+
+  background: var(--navy-deep);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+
+  color: #fffdf8;
+  font-family: var(--font-display);
+  font-size: clamp(.75rem, 1.5vw, 1rem);
+  font-weight: 700;
+  letter-spacing: .15em;
+  line-height: 1.5;
+  text-align: center;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .3);
+  pointer-events: none;
 }
 
 .art-circle {
@@ -508,11 +441,7 @@ p {
   transform: rotate(12deg);
 }
 
-
-/* =========================================================
-   7. GENERAL PAGE SECTIONS
-   Sets consistent content widths and section spacing.
-   ========================================================= */
+/* GENERAL SECTIONS */
 
 .section,
 .content-section {
@@ -541,11 +470,7 @@ p {
   color: var(--muted);
 }
 
-
-/* =========================================================
-   8. WORKSHOP CATEGORY CARDS
-   Uses a responsive grid to organize workshop categories.
-   ========================================================= */
+/* CATEGORIES */
 
 .category-grid {
   display: grid;
@@ -602,11 +527,7 @@ p {
   font-weight: 700;
 }
 
-
-/* =========================================================
-   9. WORKSHOP CARDS
-   Organizes workshop descriptions, prices, dates, and details.
-   ========================================================= */
+/* WORKSHOP CARDS */
 
 .workshop-grid {
   display: grid;
@@ -720,12 +641,7 @@ p {
   width: 100%;
 }
 
-
-/* =========================================================
-   10. NOTICES AND INFORMATION BOXES
-   Highlights important information such as safety
-   requirements and sample workshop availability.
-   ========================================================= */
+/* NOTICES */
 
 .notice {
   padding: 1rem 1.2rem;
@@ -747,11 +663,7 @@ p {
   font-size: .86rem;
 }
 
-
-/* =========================================================
-   11. MEMBERSHIP SECTIONS
-   Displays membership options and their benefits.
-   ========================================================= */
+/* WORKSHOP AND MEMBERSHIP INTRODUCTION */
 
 .split-band {
   display: grid;
@@ -795,6 +707,8 @@ p {
 .mini-label {
   color: var(--gold);
 }
+
+/* MEMBERSHIPS */
 
 .membership-grid {
   display: grid;
@@ -843,11 +757,7 @@ p {
   margin-top: auto;
 }
 
-
-/* =========================================================
-   12. SAFETY AND GETTING STARTED SECTIONS
-   Makes important safety information easy to locate.
-   ========================================================= */
+/* SAFETY AND GETTING STARTED */
 
 .safety-callout {
   display: grid;
@@ -902,11 +812,7 @@ p {
   color: var(--muted);
 }
 
-
-/* =========================================================
-   13. SECONDARY PAGE HEADINGS AND CONTENT
-   Shared styles for About, Workshops, Memberships, and Contact.
-   ========================================================= */
+/* INNER PAGE STYLES */
 
 .page-main {
   min-height: 60vh;
@@ -962,11 +868,7 @@ p {
   color: var(--teal);
 }
 
-
-/* =========================================================
-   14. TEAM AND STAFF CARDS
-   Provides a consistent layout for staff information.
-   ========================================================= */
+/* TEAM */
 
 .team-grid {
   display: grid;
@@ -1003,11 +905,7 @@ p {
   font-size: .9rem;
 }
 
-
-/* =========================================================
-   15. SAFETY PANEL AND LISTS
-   Separates important safety guidance from regular content.
-   ========================================================= */
+/* SAFETY INFORMATION */
 
 .safety-panel {
   padding: 2rem;
@@ -1027,6 +925,8 @@ p {
 .check-list li {
   margin: .45rem 0;
 }
+
+/* INFORMATION CARDS */
 
 .three-cards {
   display: grid;
@@ -1051,11 +951,7 @@ blockquote {
   color: #56352e;
 }
 
-
-/* =========================================================
-   16. WORKSHOP FILTERS
-   Styles category, skill-level, and sorting controls.
-   ========================================================= */
+/* WORKSHOP FILTERS */
 
 .filters-panel {
   margin: 2rem 0;
@@ -1135,11 +1031,7 @@ textarea {
   font-size: 1.15rem;
 }
 
-
-/* =========================================================
-   17. CONTACT PAGE AND INQUIRY FORM
-   Makes form fields, labels, feedback, and preview readable.
-   ========================================================= */
+/* CONTACT PAGE */
 
 .contact-layout {
   display: grid;
@@ -1220,8 +1112,6 @@ textarea {
   font-weight: 600;
 }
 
-/* Invalid fields are visually identified to support form correction. */
-
 [aria-invalid="true"] {
   border-color: #a51e19;
 }
@@ -1274,11 +1164,7 @@ textarea {
   overflow-wrap: anywhere;
 }
 
-
-/* =========================================================
-   18. FREQUENTLY ASKED QUESTIONS
-   Uses native details and summary elements for expandable answers.
-   ========================================================= */
+/* FAQ */
 
 .faq-grid {
   display: grid;
@@ -1305,11 +1191,7 @@ textarea {
   color: var(--muted);
 }
 
-
-/* =========================================================
-   19. FOOTER
-   Provides consistent navigation and business information.
-   ========================================================= */
+/* FOOTER */
 
 .site-footer {
   padding: 3.5rem max(1.5rem, calc((100vw - 1180px)/2)) 1.2rem;
@@ -1379,15 +1261,9 @@ textarea {
   font-size: .8rem;
 }
 
-
-/* =========================================================
-   20. TABLET RESPONSIVE LAYOUT
-   At 900px and below, multi-column grids become smaller
-   to provide more room for cards and text.
-   ========================================================= */
+/* TABLET */
 
 @media (max-width: 900px) {
-
   .hero {
     grid-template-columns: 1fr .8fr;
     min-height: 500px;
@@ -1416,15 +1292,9 @@ textarea {
   }
 }
 
-
-/* =========================================================
-   21. MOBILE RESPONSIVE LAYOUT
-   At 680px and below, navigation and content become
-   single-column layouts for smaller screens.
-   ========================================================= */
+/* MOBILE */
 
 @media (max-width: 680px) {
-
   .header-inner {
     width: min(100% - 2rem, 1180px);
     min-height: 72px;
@@ -1432,13 +1302,9 @@ textarea {
     padding: .7rem 0;
   }
 
-  /* Displays the menu button on mobile devices. */
-
   .menu-toggle {
     display: inline-flex;
   }
-
-  /* The navigation opens vertically when the menu is activated. */
 
   .site-nav {
     display: none;
@@ -1456,8 +1322,6 @@ textarea {
   .site-nav a {
     border-radius: 10px;
   }
-
-  /* Stacks the hero text and illustration vertically. */
 
   .hero {
     grid-template-columns: 1fr;
@@ -1486,8 +1350,6 @@ textarea {
   .section-heading {
     display: block;
   }
-
-  /* One-column card layouts improve readability on phones. */
 
   .category-grid,
   .workshop-grid,
@@ -1554,14 +1416,9 @@ textarea {
   }
 }
 
-
-/* =========================================================
-   22. EXTRA SMALL MOBILE SCREENS
-   Additional adjustments for screens 380px wide or smaller.
-   ========================================================= */
+/* SMALL PHONES */
 
 @media (max-width: 380px) {
-
   .brand-name {
     font-size: .82rem;
   }
@@ -1582,17 +1439,18 @@ textarea {
   .hero h1 {
     font-size: 3rem;
   }
+
+  .art-label {
+    max-width: 90%;
+    padding: .8rem 1rem;
+    font-size: .7rem;
+    letter-spacing: .1em;
+  }
 }
 
-
-/* =========================================================
-   23. REDUCED MOTION ACCESSIBILITY
-   Reduces transitions and scrolling animation for visitors
-   whose device settings request less motion.
-   ========================================================= */
+/* REDUCED MOTION ACCESSIBILITY */
 
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
@@ -1603,12 +1461,7 @@ textarea {
   }
 }
 
-
-/* =========================================================
-   24. ADDITIONAL APPROVED CLIENT BRIEF CONTENT
-   Styles for the supplementary sections added to preserve
-   the complete approved client information.
-   ========================================================= */
+/* ADDITIVE APPROVED-BRIEF CONTENT STYLES */
 
 .approved-brief-section {
   margin-top: clamp(3rem, 7vw, 6rem);

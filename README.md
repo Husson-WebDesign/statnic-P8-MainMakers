@@ -43,3 +43,17 @@ This project will eventually use:
 - [x] Website is responsive.
 - [x] JavaScript features work.
 - [x] Website has been tested through GitHub Pages.
+
+## Final Client Requirements Audit
+
+- [x] All required pages are complete.
+- [x] Client contact information is correct.
+- [x] Required services are included.
+- [x] Client-approved prices are accurate.
+- [x] Required policies are included.
+- [x] Required FAQs are included.
+- [x] Website is responsive.
+- [x] Website navigation works.
+- [x] JavaScript features work.
+- [x] Client revision requests are complete.
+- [x] Final website is published through GitHub Pages.

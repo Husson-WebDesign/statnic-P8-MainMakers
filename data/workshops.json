@@ -5,6 +5,7 @@
   "workshops": [
     {
       "id": "wooden-storage-crate",
+      "image": "images/wooden crate.jpeg",
       "name": "Build a Wooden Storage Crate",
       "category": "Woodworking",
       "skillLevel": "Beginner",

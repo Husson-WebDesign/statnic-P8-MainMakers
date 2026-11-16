@@ -17,7 +17,7 @@ Web Design
 This repository contains my semester client website project.
 
 ## Repository URL
-https://github.com/Husson-WebDesign/statnic-P8-MainMakers
+https://github.com/Husson-WebDesign/statnic-P8-MainMakers/tree/phase1-html-structure
 
 ## Live Pages URL
 https://husson-webdesign.github.io/statnic-P8-MainMakers/
@@ -81,11 +81,11 @@ This project uses:
 ## Project Status
 
 - [x] Lab 0 - Development Environment Setup
-- [ ] Lab 1 - HTML Structure
-- [ ] Lab 2 - CSS Design
-- [ ] Responsive Design
-- [ ] JavaScript
-- [ ] Final Client Website
+- [x] Lab 1 - HTML Structure
+- [x] Lab 2 - CSS Design
+- [x] Responsive Design
+- [x] JavaScript
+- [x] Final Client Website
 
 ## Phase 4 Client Requirements Audit
 

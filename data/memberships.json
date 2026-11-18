@@ -1,0 +1,74 @@
+{
+  "notice": "Membership information reflects the approved class-project brief. Inquiries do not purchase a membership or grant equipment access.",
+  "memberships": [
+    {
+      "id": "day-pass",
+      "name": "Day Pass",
+      "price": 20,
+      "priceUnit": "per day",
+      "accessPeriod": "One day",
+      "summary": "A flexible option for occasional visitors, short projects, or people trying the makerspace before choosing a longer membership.",
+      "intendedFor": [
+        "Occasional visitors",
+        "Short projects",
+        "First-time visitors"
+      ],
+      "includes": [
+        "Access to approved shared workspace areas during eligible operating hours"
+      ],
+      "limitations": [
+        "Does not automatically authorize use of restricted equipment.",
+        "Some tools require separate safety training."
+      ]
+    },
+    {
+      "id": "monthly-maker",
+      "name": "Monthly Maker",
+      "price": 65,
+      "priceUnit": "per month",
+      "accessPeriod": "Monthly",
+      "summary": "Regular access for makers who want to use shared workspace and approved basic hand tools.",
+      "intendedFor": [
+        "Regular makers",
+        "Personal projects",
+        "Community maker activities"
+      ],
+      "includes": [
+        "Shared workspace access",
+        "Approved basic hand-tool access",
+        "Member workshop discounts",
+        "Access to community maker areas",
+        "Participation in eligible member activities"
+      ],
+      "limitations": [
+        "Restricted equipment may require separate authorization."
+      ]
+    },
+    {
+      "id": "unlimited-maker",
+      "name": "Unlimited Maker",
+      "price": 110,
+      "priceUnit": "per month",
+      "accessPeriod": "Monthly",
+      "summary": "An option for frequent users who want expanded makerspace access during approved operating hours.",
+      "intendedFor": [
+        "Frequent makers",
+        "Ongoing projects",
+        "Expanded workspace access"
+      ],
+      "includes": [
+        "Expanded access during approved operating hours",
+        "Shared workspace",
+        "Eligible equipment use after required training",
+        "Workshop discounts",
+        "Limited project storage",
+        "Member maker-area access"
+      ],
+      "limitations": [
+        "Unlimited does not mean unrestricted use of every tool.",
+        "All equipment rules and authorization requirements still apply.",
+        "Storage is limited and must be approved."
+      ]
+    }
+  ]
+}
